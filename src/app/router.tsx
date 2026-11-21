@@ -1,5 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './providers/AuthProvider'
+import { envOk } from '../lib/supabase'
 import Layout from '../components/layout/Layout'
 import LoginPage from '../pages/LoginPage'
 import DashboardPage from '../pages/DashboardPage'
@@ -17,6 +18,7 @@ import StatsPage from '../pages/StatsPage'
 import ProfilePage from '../pages/ProfilePage'
 export default function Router() {
   const { role, loading, error } = useAuth()
+  if (!envOk) return <div className="shell"><div className="card stack"><h2>Не настроен Supabase</h2><p>Создай файл <code>.env</code> рядом с package.json (скопируй .env.example) и укажи VITE_SUPABASE_URL и VITE_SUPABASE_ANON_KEY. Потом перезапусти <code>npm run dev</code>.</p></div></div>
   if (loading) return <div className="shell"><p className="muted">Загрузка…</p></div>
   if (!role) return <LoginPage error={error} />
   return (
